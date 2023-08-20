@@ -1,0 +1,108 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp' version "$ksp_version"
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.uberbookingexperience"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_compiler_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+    sourceSets {
+        debug {
+            kotlin { srcDir(file("build/generated/ksp/debug/kotlin")) }
+        }
+        release {
+            kotlin { srcDir(file("build/generated/ksp/release/kotlin")) }
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:$ktx_core_version"
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.activity:activity-compose:$compose_activity_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_runtime_ktx_version"
+
+    //google maps compose
+    implementation "com.google.android.gms:play-services-maps:$play_service_maps_version"
+    implementation "com.google.maps.android:maps-compose:$compose_maps_version"
+    implementation "com.google.maps.android:maps-compose-widgets:$compose_maps_version"
+
+    //barricade
+    implementation "com.mutualmobile:barricade2:$barricade_version"
+    implementation "com.mutualmobile:barricade-annotations:$barricade_version"
+    ksp "com.mutualmobile:barricade-compiler:$barricade_version"
+
+    //accompanist
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
+
+    //window size
+    implementation "androidx.compose.material3:material3:$material3_version"
+    implementation "androidx.compose.material3:material3-window-size-class:$material3_version"
+
+    // splash screen
+    implementation "androidx.core:core-splashscreen:$splash_screen_version"
+
+    // navigation
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    // material icons extended
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
+    // date-time picker
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:$date_time_picker_version"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_libs_version"
+}
+secrets {
+    // To add your Maps API key to this project:
+    // 1. Add this line to your local.properties file, where YOUR_API_KEY is your API key:
+    //        MAPS_API_KEY=YOUR_API_KEY
+    defaultPropertiesFileName 'local.properties'
+}
